@@ -43,8 +43,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
           children: [
             // Background carousel
             CarouselSlider(
-              items:
-                  controller.bannerImages.map((url) {
+              items: controller.bannerImages.map((url) {
                     return Container(
                       width: double.infinity,
                       color: Colors.black12,
@@ -138,6 +137,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                        SizedBox(height: 4),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 30),
+                          child: Text(
+                            "Chennai trade centre Nandambakkam, Chennai",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
                         SizedBox(height: 6),
                         Row(
                           children: [
@@ -223,36 +230,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             height: 1.6, // for better line height
                           ),
                         ),
-                        // SizedBox(height: 8),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: const [
-                        //     Text(
-                        //       'Event Highlights',
-                        //       style: TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 18,
-                        //       ),
-                        //     ),
-                        //     SizedBox(height: 6),
-                        //     Text('• 200+ Exhibitors representing 15+ countries',style: TextStyle(fontSize: 15,color: Colors.black87,),),
-                        //     SizedBox(height: 4),
-                        //     Text('• Trend showcases and style presentations',style: TextStyle(fontSize: 15,color: Colors.black87,),),
-                        //     SizedBox(height: 4),
-                        //     Text('• Live craftsmanship demonstrations',style: TextStyle(fontSize: 15,color: Colors.black87,),),
-                        //     SizedBox(height: 4),
-                        //     Text('• Meet & greet sessions with top designers',style: TextStyle(fontSize: 15,color: Colors.black87,),),
-                        //     SizedBox(height: 4),
-                        //     Text('• Exclusive previews of 2025 collections',style: TextStyle(fontSize: 15,color: Colors.black87,),),
-                        //   ],
-                        // ),
                         SizedBox(height: 20),
-                        // CommonButton(
-                        //   text: "Register Now",
-                        //   onPressed: () {
-                        //     Get.to(() => VisitorDetailScreen());
-                        //   },
-                        // ),
                       ],
                     ),
                   ),

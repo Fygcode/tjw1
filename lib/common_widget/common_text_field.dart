@@ -90,7 +90,7 @@ class CommonTextField extends StatefulWidget {
     this.minLines = 1,
     this.isRequired = false,
     this.hintText = 'Enter your email',
-    this.labelText = 'Email',
+    this.labelText,
     this.validator,
     this.prefixIcon,
     this.suffixIcon,
@@ -167,7 +167,7 @@ class CommonTextField extends StatefulWidget {
     this.minLines = 1,
     this.isRequired = false,
     this.hintText,
-    this.labelText = '',
+    this.labelText,
     this.validator,
     this.prefixIcon,
     this.suffixIcon,
@@ -214,6 +214,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
       minLines: widget.minLines,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
+        hintText: widget.hintText ?? "",
         fillColor: widget.fillColor ?? (widget.enabled ? AppColor.white : Colors.grey.shade200),
         filled: true,
         contentPadding: const EdgeInsets.symmetric(
@@ -248,12 +249,13 @@ class _CommonTextFieldState extends State<CommonTextField> {
             width: 1,
           ),
         ),
-        hintText: widget.hintText ?? "",
 
-        labelText:
-            widget.isRequired
-                ? '${widget.labelText ?? ''} *'
-                : widget.labelText,
+
+      //  labelText: widget.isRequired ? '${widget.labelText ?? ''} *' : widget.labelText,
+        labelText: (widget.labelText != null && widget.labelText!.isNotEmpty)
+            ? (widget.isRequired ? '${widget.labelText!} *' : widget.labelText)
+            : null,
+
         labelStyle: TextStyle(color: Colors.black45),
         prefixIcon: widget.prefixIcon,
         suffixIcon:

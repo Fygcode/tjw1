@@ -25,12 +25,14 @@ class _CompanyScreenState extends State<CompanyScreen> {
     return Scaffold(
       backgroundColor: AppColor.background,
       body: SafeArea(
+        bottom: false,
         child: TapOutsideUnFocus(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
                 key: controller.formKeyCompany,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -80,35 +82,34 @@ class _CompanyScreenState extends State<CompanyScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
+
                     CommonDropdown<String>(
                       items:
-                          CompanyType.values
-                              .map(
-                                (e) =>
-                                    e.name[0].toUpperCase() +
-                                    e.name.substring(1),
-                              )
-                              .toList(),
+                      CompanyType.values
+                          .map(
+                            (e) =>
+                        e.name[0].toUpperCase() +
+                            e.name.substring(1),
+                      )
+                          .toList(),
                       hintText: 'Company Type*',
-                      //  isRequired: true,
                       selectedItem:
-                          controller.companyNameController.text.isNotEmpty
-                              ? controller
-                                  .companyNameController
-                                  .text
-                                  .capitalizeFirst
-                              : null,
+                      controller.companyTypeController.text.isNotEmpty
+                          ? controller.companyTypeController.text
+                          : null,
                       onChanged: (value) {
-                        CompanyType? selectedStatus = CompanyType.values.firstWhere(
-                          (e) => e.name.toLowerCase() == value?.toLowerCase(),
-                          orElse: () => CompanyType.Proprietorship,
-                        );
-                        controller.companyNameController.text =
-                            selectedStatus.name;
-                        print("Selected: $selectedStatus");
-                        print(
-                          "Selected: ${controller.companyNameController.text}",
-                        );
+                        if (value != null) {
+                          CompanyType selectedStatus = CompanyType.values
+                              .firstWhere(
+                                (e) =>
+                            e.name.toLowerCase() ==
+                                value.toLowerCase(),
+                            orElse: () => CompanyType.Proprietorship,
+                          );
+                          controller.companyTypeController.text = value;
+                          print("Selected: $selectedStatus");
+                          print("Selected Text: ${controller.companyTypeController.text}",);
+                        }
                       },
                       validator: (val) {
                         if (val == null || val.isEmpty) {
@@ -117,6 +118,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                         return null;
                       },
                     ),
+
                     SizedBox(height: 10),
 
                     // Company Name
@@ -242,18 +244,22 @@ class _CompanyScreenState extends State<CompanyScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    CommonTextField(
+                    CommonTextField.phone(
                       controller: controller.landlineController,
                       focusNode: controller.landlineFocusNode,
-                      hintText: 'Enter Landline',
-                      keyboardType: TextInputType.phone,
+                      hintText: 'Enter Landline *',
                       validator: (val) {
                         if (val == null || val.isEmpty) {
-                          return 'Please enter landline';
+                          return 'Please enter landline number';
+                        }
+                        RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
+                        if (!phoneRegExp.hasMatch(val)) {
+                          return 'Please enter a valid landline number';
                         }
                         return null;
                       },
                     ),
+
                     SizedBox(height: 10),
 
                     // Upload GST
@@ -265,17 +271,6 @@ class _CompanyScreenState extends State<CompanyScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    // CommonTextField(
-                    //   controller: controller.uploadGstController,
-                    //   focusNode: controller.uploadGstFocusNode,
-                    //   hintText: 'Upload GST File*',
-                    //   validator: (val) {
-                    //     if (val == null || val.isEmpty) {
-                    //       return 'Please upload GST document';
-                    //     }
-                    //     return null;
-                    //   },
-                    // ),
                     GestureDetector(
                       onTap: () {
                         controller.pickFile('gstCopy');

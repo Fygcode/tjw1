@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-
 import '../../../common_widget/common_button.dart';
 import '../../../common_widget/common_dropdown.dart';
 import '../../../common_widget/common_text_field.dart';
@@ -27,6 +26,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: AppColor.background,
@@ -34,15 +34,21 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
       ),
       child: Scaffold(
         backgroundColor: AppColor.background,
-        extendBodyBehindAppBar: false,
+        resizeToAvoidBottomInset: false,
         body: SafeArea(
+          bottom: false,
           child: TapOutsideUnFocus(
             child: SingleChildScrollView(
+              // padding: EdgeInsets.only(
+              //   bottom: MediaQuery.of(context).viewInsets.bottom,
+              // ),
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: Form(
                   key: controller.formKeyOrganization,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -67,6 +73,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         controller: controller.companyGstController,
                         focusNode: controller.companyGstFocusNode,
                         hintText: 'Enter Company GST*',
+                        textInputAction: TextInputAction.next,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return 'Please enter GST number';
@@ -91,6 +98,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         ),
                       ),
                       SizedBox(height: 4),
+
                       CommonDropdown<String>(
                         items:
                             CompanyType.values
@@ -101,26 +109,23 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                                 )
                                 .toList(),
                         hintText: 'Company Type*',
-                        //  isRequired: true,
                         selectedItem:
                             controller.companyTypeController.text.isNotEmpty
-                                ? controller
-                                    .companyTypeController
-                                    .text
-                                    .capitalizeFirst
+                                ? controller.companyTypeController.text
                                 : null,
                         onChanged: (value) {
-                          CompanyType?
-                          selectedStatus = CompanyType.values.firstWhere(
-                            (e) => e.name.toLowerCase() == value?.toLowerCase(),
-                            orElse: () => CompanyType.Proprietorship,
-                          );
-                          controller.companyTypeController.text =
-                              selectedStatus.name;
-                          print("Selected: $selectedStatus");
-                          print(
-                            "Selected: ${controller.companyTypeController.text}",
-                          );
+                          if (value != null) {
+                            CompanyType selectedStatus = CompanyType.values
+                                .firstWhere(
+                                  (e) =>
+                                      e.name.toLowerCase() ==
+                                      value.toLowerCase(),
+                                  orElse: () => CompanyType.Proprietorship,
+                                );
+                            controller.companyTypeController.text = value;
+                            print("Selected: $selectedStatus");
+                            print("Selected Text: ${controller.companyTypeController.text}",);
+                          }
                         },
                         validator: (val) {
                           if (val == null || val.isEmpty) {
@@ -129,6 +134,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                           return null;
                         },
                       ),
+
                       SizedBox(height: 10),
 
                       // Company Name
@@ -144,6 +150,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         controller: controller.companyNameController,
                         focusNode: controller.companyNameFocusNode,
                         hintText: 'Enter Company Name*',
+                        textInputAction: TextInputAction.next,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return 'Please enter company name';
@@ -166,6 +173,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         controller: controller.communicationAddressController,
                         focusNode: controller.communicationAddressFocusNode,
                         hintText: 'Enter Communication Address*',
+                        textInputAction: TextInputAction.next,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return 'Please enter communication address';
@@ -188,6 +196,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         controller: controller.cityController,
                         focusNode: controller.cityFocusNode,
                         hintText: 'Enter City*',
+                        textInputAction: TextInputAction.next,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return 'Please enter city';
@@ -210,6 +219,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         controller: controller.stateController,
                         focusNode: controller.stateFocusNode,
                         hintText: 'Enter State*',
+                        textInputAction: TextInputAction.next,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return 'Please enter state';
@@ -233,6 +243,7 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         focusNode: controller.pincodeFocusNode,
                         hintText: 'Enter Pincode*',
                         keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return 'Please enter pincode';
@@ -254,18 +265,36 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         ),
                       ),
                       SizedBox(height: 4),
-                      CommonTextField(
+
+                      // CommonTextField(
+                      //   controller: controller.landlineController,
+                      //   focusNode: controller.landlineFocusNode,
+                      //   hintText: 'Enter Landline',
+                      //   textInputAction: TextInputAction.next,
+                      //   keyboardType: TextInputType.phone,
+                      //   validator: (val) {
+                      //     if (val == null || val.isEmpty) {
+                      //       return 'Please enter landline';
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      CommonTextField.phone(
                         controller: controller.landlineController,
                         focusNode: controller.landlineFocusNode,
-                        hintText: 'Enter Landline',
-                        keyboardType: TextInputType.phone,
+                        hintText: 'Enter Landline *',
                         validator: (val) {
                           if (val == null || val.isEmpty) {
-                            return 'Please enter landline';
+                            return 'Please enter landline number';
+                          }
+                          RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
+                          if (!phoneRegExp.hasMatch(val)) {
+                            return 'Please enter a valid landline number';
                           }
                           return null;
                         },
                       ),
+
                       SizedBox(height: 10),
 
                       // Upload GST
@@ -277,17 +306,6 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                         ),
                       ),
                       SizedBox(height: 4),
-                      // CommonTextField(
-                      //   controller: controller.uploadGstController,
-                      //   focusNode: controller.uploadGstFocusNode,
-                      //   hintText: 'Upload GST File*',
-                      //   validator: (val) {
-                      //     if (val == null || val.isEmpty) {
-                      //       return 'Please upload GST document';
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
                       GestureDetector(
                         onTap: () {
                           controller.pickFile('gstCopy');
@@ -356,20 +374,21 @@ class _OrganizationDetailScreenState extends State<OrganizationDetailScreen> {
                             : SizedBox.shrink();
                       }),
                       SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: CommonButton(
+                          text: "Continue",
+                          onPressed: () {
+                            controller.saveOrganization();
+                          },
+                        ),
+                      ),
+                      SizedBox(height: size.height / 2),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: CommonButton(
-            text: "Continue",
-            onPressed: () {
-              controller.saveOrganization();
-            },
           ),
         ),
       ),

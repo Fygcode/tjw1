@@ -66,11 +66,11 @@ class VisitorDetailController extends GetxController {
     // Then, validate all uploaded documents
     final isValid = validateAllDocuments();
     if (!isValid) {
-      Get.snackbar(
-        'Missing Information',
-        'Please upload all required documents',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // Get.snackbar(
+      //   'Missing Information',
+      //   'Please upload all required documents',
+      //   snackPosition: SnackPosition.TOP,
+      // );
       return;
     }
 

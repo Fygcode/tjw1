@@ -41,6 +41,9 @@ class OrganizationDetailController extends GetxController {
   // Reactive file names
   final RxString gstCopyFileName = ''.obs;
 
+  String? selectedCompanyType;
+
+
   // Error name
   var gstCopyError = ''.obs;
 
@@ -72,7 +75,7 @@ class OrganizationDetailController extends GetxController {
     // ✅ Validate form fields first
     if (formKeyOrganization.currentState?.validate() != true) {
       print('Form is invalid. Please correct the errors.');
-  //    return;
+      return;
     }
 
     // ✅ Validate GST copy upload

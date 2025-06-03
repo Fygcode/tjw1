@@ -119,6 +119,7 @@ class _EbadgeScreenState extends State<EbadgeScreen> {
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           Text(

@@ -27,6 +27,7 @@ class _VisitorDetailScreenState extends State<VisitorDetailScreen> {
     return Scaffold(
       backgroundColor: AppColor.background,
       extendBodyBehindAppBar: false,
+      extendBody: true,
       // appBar: AppBar(
       //   elevation: 0,
       //   backgroundColor: Colors.transparent,
@@ -69,6 +70,7 @@ class _VisitorDetailScreenState extends State<VisitorDetailScreen> {
               padding: const EdgeInsets.all(20),
               child: Form(
                 key: controller.formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -177,18 +179,23 @@ class _VisitorDetailScreenState extends State<VisitorDetailScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    CommonTextField(
+                    CommonTextField.phone(
                       controller: controller.phoneNumberController,
                       focusNode: controller.phoneNumberFocusNode,
-                      hintText: 'Enter Phone Number*',
-                      keyboardType: TextInputType.phone,
+                      hintText: 'Phone Number *',
                       validator: (val) {
                         if (val == null || val.isEmpty) {
-                          return 'Please enter your phone number';
+                          return 'Please enter phone number';
+                        }
+                        RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
+                        if (!phoneRegExp.hasMatch(val)) {
+                          return 'Please enter a valid phone number';
                         }
                         return null;
                       },
                     ),
+
+
                     SizedBox(height: 10),
 
                     // City
@@ -200,17 +207,30 @@ class _VisitorDetailScreenState extends State<VisitorDetailScreen> {
                       ),
                     ),
                     SizedBox(height: 4),
-                    CommonTextField(
+                    CommonTextField.email(
                       controller: controller.emailController,
                       focusNode: controller.emailFocusNode,
                       hintText: 'Enter Email*',
                       validator: (val) {
-                        if (val == null || val.isEmpty) {
-                          return 'Please enter Email';
+                        if (val == null || val.trim().isEmpty) {
+                          return 'Please enter email';
                         }
+
+                        final emailRegex = RegExp(
+                          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+"
+                          r"@"
+                          r"[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?"
+                          r"(?:\.[a-zA-Z]{2,})+$",
+                        );
+
+                        if (!emailRegex.hasMatch(val.trim())) {
+                          return 'Please enter a valid email address';
+                        }
+
                         return null;
                       },
                     ),
+
                     SizedBox(height: 10),
 
                     // State
@@ -252,9 +272,9 @@ class _VisitorDetailScreenState extends State<VisitorDetailScreen> {
                               ? controller.idTypeController.text.capitalizeFirst
                               : null,
                       onChanged: (value) {
-                        Gender? selectedStatus = Gender.values.firstWhere(
+                        IDType? selectedStatus = IDType.values.firstWhere(
                           (e) => e.name.toLowerCase() == value?.toLowerCase(),
-                          orElse: () => Gender.male,
+                          orElse: () => IDType.aadhaar,
                         );
                         controller.idTypeController.text = selectedStatus.name;
                         print("Selected: $selectedStatus");
@@ -522,13 +542,16 @@ class _VisitorDetailScreenState extends State<VisitorDetailScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: CommonButton(
-          text: "Save",
-          onPressed: () {
-            controller.saveVisitor();
-          },
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: CommonButton(
+            text: "Save",
+            onPressed: () {
+              print("SSSSS=====");
+              controller.saveVisitor();
+            },
+          ),
         ),
       ),
     );
