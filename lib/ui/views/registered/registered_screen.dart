@@ -44,7 +44,7 @@ class _RegisteredScreenState extends State<RegisteredScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: AppColor.secondary,
+                        color: AppColor.tertiary,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

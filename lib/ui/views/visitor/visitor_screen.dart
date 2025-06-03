@@ -23,6 +23,7 @@ class _VisitorScreenState extends State<VisitorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -41,7 +42,7 @@ class _VisitorScreenState extends State<VisitorScreen> {
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
-                        color: Color(0xffFCF4CB),
+                        color: AppColor.tertiary,
                         borderRadius: BorderRadius.circular(6)
                     ),
                     child: Padding(
